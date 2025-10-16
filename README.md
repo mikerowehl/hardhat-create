@@ -33,7 +33,7 @@ went through to get it up and going:
 * npm init -y
 * npm install --save-dev hardhat
 * npm install dotenv # NOTE: I did't install the other packages like ethers or chai manually here, just dotenv
-* npx hardhat --init # I created the project with Hardhat V3, converted to typescript, and with chai/ethers
+* npx hardhat --init # I created the project with Hardhat V3, converted to typescript, and with mocha/ethers
 * add `import "dotenv/config.js";` to the start of the hardhat.config.ts
 * remove the existing contents of the contracts directory and put in Faucet.sol exactly as it was
 * removed the existing script and put the deploy.ts in place, there were some changes there, noted in comments in the scripts/deploy.ts file
