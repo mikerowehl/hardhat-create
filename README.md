@@ -1,57 +1,45 @@
-# Sample Hardhat 3 Beta Project (`mocha` and `ethers`)
+# hardhat-create
 
-This project showcases a Hardhat 3 Beta project using `mocha` for tests and the `ethers` library for Ethereum interactions.
+This is a version of the `Deploy a Contract with Ethers.js + Hardhat` exercise from Alchemy University Ethereum Bootcamp.
+The example given looks like it was based on a previous version of Hardhat or Ethers.js, I got a few errors trying to get
+it going. I saw some suggestions related to forcing the project to older versions, but instead I wanted to try getting it
+working with the updated tooling.
 
-To learn more about the Hardhat 3 Beta, please visit the [Getting Started guide](https://hardhat.org/docs/getting-started#getting-started-with-hardhat-3). To share your feedback, join our [Hardhat 3 Beta](https://hardhat.org/hardhat3-beta-telegram-group) Telegram group or [open an issue](https://github.com/NomicFoundation/hardhat/issues/new) in our GitHub issue tracker.
+These are the versions I've been working with:
 
-## Project Overview
-
-This example project includes:
-
-- A simple Hardhat configuration file.
-- Foundry-compatible Solidity unit tests.
-- TypeScript integration tests using `mocha` and ethers.js
-- Examples demonstrating how to connect to different types of networks, including locally simulating OP mainnet.
-
-## Usage
-
-### Running Tests
-
-To run all the tests in the project, execute the following command:
-
-```shell
-npx hardhat test
+```
+$ npm list
+hardhat-create@1.0.0 /home/miker/repos/hardhat-create
+├── @nomicfoundation/hardhat-ignition@3.0.3
+├── @nomicfoundation/hardhat-toolbox-mocha-ethers@3.0.0
+├── @types/chai-as-promised@8.0.2
+├── @types/chai@4.3.20
+├── @types/mocha@10.0.10
+├── @types/node@22.18.10
+├── chai@5.3.3
+├── dotenv@17.2.3
+├── ethers@6.15.0
+├── forge-std@1.9.4 (git+ssh://git@github.com/foundry-rs/forge-std.git#1eea5bae12ae557d589f9f0f0edae2faa47cb262)
+├── hardhat@3.0.7
+├── mocha@11.7.4
+└── typescript@5.8.3
 ```
 
-You can also selectively run the Solidity or `mocha` tests:
+I tried to keep this updated version as close to the code from the original sample as I could. Here's the process I
+went through to get it up and going:
 
-```shell
-npx hardhat test solidity
-npx hardhat test mocha
-```
+* mkdir hardhat-create
+* cd hardhat-create
+* npm init -y
+* npm install --save-dev hardhat
+* npm install dotenv # NOTE: I did't install the other packages like ethers or chai manually here, just dotenv
+* npx hardhat --init # I created the project with Hardhat V3, converted to typescript, and with chai/ethers
+* add `import "dotenv/config.js";` to the start of the hardhat.config.ts
+* remove the existing contents of the contracts directory and put in Faucet.sol exactly as it was
+* removed the existing script and put the deploy.ts in place, there were some changes there, noted in comments in the scripts/deploy.ts file
+* copy the env.sample to .env and fill in the url and key
+* npx hardhat compile
+* npx hardhat run scripts/deploy.ts --network sepolia
 
-### Make a deployment to Sepolia
-
-This project includes an example Ignition module to deploy the contract. You can deploy this module to a locally simulated chain or to Sepolia.
-
-To run the deployment to a local chain:
-
-```shell
-npx hardhat ignition deploy ignition/modules/Counter.ts
-```
-
-To run the deployment to Sepolia, you need an account with funds to send the transaction. The provided Hardhat configuration includes a Configuration Variable called `SEPOLIA_PRIVATE_KEY`, which you can use to set the private key of the account you want to use.
-
-You can set the `SEPOLIA_PRIVATE_KEY` variable using the `hardhat-keystore` plugin or by setting it as an environment variable.
-
-To set the `SEPOLIA_PRIVATE_KEY` config variable using `hardhat-keystore`:
-
-```shell
-npx hardhat keystore set SEPOLIA_PRIVATE_KEY
-```
-
-After setting the variable, you can run the deployment with the Sepolia network:
-
-```shell
-npx hardhat ignition deploy --network sepolia ignition/modules/Counter.ts
-```
+I was able to get the contract showing up on Sepolia etherscan. Before the changes I was getting lots of immediate
+and obvious errors like modules not loading and undefined symbols.
